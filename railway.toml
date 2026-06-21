@@ -1,9 +1,9 @@
 [build]
 builder = "RAILPACK"
-buildCommand = "cargo build --release"
+buildCommand = "cargo build --release && mkdir -p bin && cp target/release/lars-portfolio bin/lars-portfolio"
 
 [deploy]
-startCommand = "./target/release/lars-portfolio"
+startCommand = "./bin/lars-portfolio"
 healthcheckPath = "/health"
 healthcheckTimeout = 30
 restartPolicyType = "ON_FAILURE"

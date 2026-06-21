@@ -82,7 +82,7 @@ The admin area can create, edit, publish or unpublish, reorder, and delete proje
    RUST_LOG=info
    ```
 
-5. Deploy. `railway.toml` uses Railpack, builds with `cargo build --release`, starts `./target/release/lars-portfolio`, and checks `/health`.
+5. Deploy. `railway.toml` uses Railpack, builds with `cargo build --release`, copies the compiled binary to Railpack's `./bin` runtime path, starts `./bin/lars-portfolio`, and checks `/health`.
 6. Open `/admin/login` on the deployed domain and create the admin password.
 
 ## Useful Checks

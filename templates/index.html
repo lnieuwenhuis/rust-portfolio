@@ -29,31 +29,39 @@
         </dl>
     </div>
 
-    <div class="system-visual" data-orbit aria-label="A compact visual inventory of Lars' work">
+    <div class="system-visual" data-orbit aria-label="How this Rust portfolio is put together">
         <div class="visual-heading">
-            <span>Workbench</span>
+            <span>Portfolio system</span>
             <strong>01</strong>
         </div>
-        <div class="signal-board">
-            <div class="signal-row">
-                <span>Input</span>
-                <strong>messy operational flow</strong>
+        <div class="system-card">
+            <p class="system-label">What this is</p>
+            <h2>Public portfolio, private project CMS.</h2>
+            <p>Visitors get fast Rust-rendered pages. Lars gets a small backend to draft, publish, reorder, and edit projects without touching code.</p>
+        </div>
+        <div class="flow-board">
+            <div class="flow-step">
+                <span>Visitor</span>
+                <strong>reads public project notes</strong>
             </div>
-            <div class="signal-row">
-                <span>Method</span>
-                <strong>model the state, trim the clicks</strong>
+            <div class="flow-step">
+                <span>Admin</span>
+                <strong>adds drafts behind a password</strong>
             </div>
-            <div class="signal-row">
-                <span>Output</span>
-                <strong>forms, boards, scans, dashboards</strong>
+            <div class="flow-step">
+                <span>Postgres</span>
+                <strong>stores the portfolio archive</strong>
             </div>
-            <div class="signal-row">
-                <span>Check</span>
-                <strong>does the next action feel obvious?</strong>
+            <div class="flow-step">
+                <span>Railway</span>
+                <strong>runs the same Rust binary</strong>
             </div>
         </div>
-        <div class="mini-map" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span><span></span>
+        <div class="deploy-strip" aria-label="Core stack">
+            <span>Axum</span>
+            <span>Askama</span>
+            <span>SQLx</span>
+            <span>Postgres</span>
         </div>
     </div>
 </section>

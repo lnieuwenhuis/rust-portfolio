@@ -123,7 +123,6 @@ mod tests {
             config: Config {
                 database_url: "postgres://postgres:postgres@localhost/lars_portfolio".to_string(),
                 admin_username: "lars".to_string(),
-                admin_password_hash: "unused".to_string(),
                 session_secret: "0123456789012345678901234567890123456789012345678901234567890123"
                     .to_string(),
                 base_url: "http://localhost:3000".to_string(),

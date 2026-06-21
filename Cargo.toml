@@ -1,0 +1,36 @@
+[package]
+name = "lars-portfolio"
+version = "0.1.0"
+edition = "2024"
+description = "A Rust-first portfolio website for Lars Nieuwenhuis."
+license = "MIT"
+
+[dependencies]
+ammonia = "4"
+anyhow = "1"
+argon2 = "0.5"
+askama = "0.14"
+axum = { version = "0.8", features = ["macros"] }
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+hmac = "0.12"
+pulldown-cmark = "0.13"
+rand_core = { version = "0.6", features = ["std"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "json", "migrate", "macros"] }
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal", "net"] }
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["compression-br", "compression-gzip", "fs", "trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+
+[profile.release]
+strip = true
+lto = "thin"
+codegen-units = 1
+panic = "abort"

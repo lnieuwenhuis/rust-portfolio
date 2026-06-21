@@ -1,0 +1,6 @@
+/target/
+/.env
+/.sqlx/
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Lars Nieuwenhuis | Full-stack Builder{% endblock %}
+{% block description %}A Rust-first portfolio for Lars Nieuwenhuis, focused on practical full-stack tools, clean systems, and thoughtful iteration.{% endblock %}
+
+{% block content %}
+<section class="hero section-pad" id="top">
+    <div class="hero-copy" data-reveal>
+        <p class="eyebrow">Netherlands based software developer</p>
+        <h1>Lars Nieuwenhuis</h1>
+        <p class="hero-line">Full-stack builder with a practical systems mindset, a taste for sharp interfaces, and curiosity for how things really work.</p>
+        <div class="hero-actions">
+            <a class="button primary" href="#projects">View projects</a>
+            <a class="button secondary" href="#contact">Start a conversation</a>
+        </div>
+    </div>
+
+    <div class="system-visual" data-orbit data-reveal aria-label="A visual system of Lars' work and interests">
+        <div class="orbit-core">
+            <span>Rust</span>
+            <small>systems first</small>
+        </div>
+        <div class="orbit-card card-a magnetic-card">
+            <span>Full-stack</span>
+            <strong>React / Laravel / GraphQL</strong>
+        </div>
+        <div class="orbit-card card-b magnetic-card">
+            <span>Momentum</span>
+            <strong>F1 / sim racing / fitness</strong>
+        </div>
+        <div class="orbit-card card-c magnetic-card">
+            <span>Curiosity</span>
+            <strong>AI tools / spaceflight / tech</strong>
+        </div>
+        <div class="orbit-card card-d magnetic-card">
+            <span>Focus</span>
+            <strong>Golf / optimization / craft</strong>
+        </div>
+    </div>
+</section>
+
+<section class="about section-pad" id="about">
+    <div class="section-kicker" data-reveal>About</div>
+    <div class="split-layout">
+        <h2 data-reveal>Practical tools, clean flows, and systems that get easier to use the longer you live with them.</h2>
+        <div class="rich-copy" data-reveal>
+            <p>Lars is a software developer who likes building things that make real workflows smoother. The common thread is simple: understand the system, shape the interface around the next useful action, then improve through iteration.</p>
+            <p>He is comfortable around React, TypeScript, Laravel, Vue, and GraphQL, and is actively exploring Rust as a strong foundation for fast, reliable web services. This portfolio follows that instinct: Rust-first, server-rendered, and intentionally light on frontend machinery.</p>
+        </div>
+    </div>
+</section>
+
+<section class="projects-section section-pad dark-band" id="projects">
+    <div class="section-heading" data-reveal>
+        <p class="section-kicker">Featured projects</p>
+        <h2>Work with a little texture.</h2>
+    </div>
+
+    {% if has_projects %}
+    <div class="project-grid">
+        {% for project in projects %}
+        <article class="project-card magnetic-card" style="--accent: {{ project.accent }};" data-reveal>
+            {% if project.has_image_url %}
+            <img src="{{ project.image_url }}" alt="" loading="lazy">
+            {% endif %}
+            <div class="project-card-top">
+                <span>{{ project.status }}</span>
+                {% if project.featured %}
+                <span>Featured</span>
+                {% endif %}
+            </div>
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.summary }}</p>
+            {% if project.has_role %}
+            <p class="project-role">{{ project.role }}</p>
+            {% endif %}
+            <div class="tag-row" aria-label="Technologies">
+                {% for tech in project.tech_stack %}
+                <span>{{ tech }}</span>
+                {% endfor %}
+            </div>
+            <div class="project-links">
+                <a href="/projects/{{ project.slug }}">Case study</a>
+                {% if project.has_live_url %}
+                <a href="{{ project.live_url }}" rel="noopener noreferrer">Live</a>
+                {% endif %}
+                {% if project.has_github_url %}
+                <a href="{{ project.github_url }}" rel="noopener noreferrer">Code</a>
+                {% endif %}
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state" data-reveal>
+        <h3>Projects are being shaped.</h3>
+        <p>The admin space has draft starter projects ready to edit and publish when they are portfolio-safe.</p>
+    </div>
+    {% endif %}
+</section>
+
+<section class="stack section-pad" id="stack">
+    <div class="section-heading compact" data-reveal>
+        <p class="section-kicker">Skills / Stack</p>
+        <h2>Useful tools, grouped by where they help.</h2>
+    </div>
+    <div class="stack-grid">
+        <div class="stack-group magnetic-card" data-reveal>
+            <h3>Frontend</h3>
+            <p>React, Vue, TypeScript, accessible HTML, handcrafted CSS, practical UI state.</p>
+        </div>
+        <div class="stack-group magnetic-card" data-reveal>
+            <h3>Backend</h3>
+            <p>Laravel, Rust, Axum, async services, authentication, server-rendered workflows.</p>
+        </div>
+        <div class="stack-group magnetic-card" data-reveal>
+            <h3>Databases</h3>
+            <p>PostgreSQL, SQLx, migrations, relational modeling, query-backed product behavior.</p>
+        </div>
+        <div class="stack-group magnetic-card" data-reveal>
+            <h3>Tooling</h3>
+            <p>Git, API debugging, GraphQL, code review habits, focused tests, automation.</p>
+        </div>
+        <div class="stack-group magnetic-card" data-reveal>
+            <h3>Deployment</h3>
+            <p>Railway, environment-driven services, production config, fast static delivery.</p>
+        </div>
+        <div class="stack-group magnetic-card" data-reveal>
+            <h3>Learning / Exploring</h3>
+            <p>Rust systems, AI-assisted workflows, performance-minded design, cleaner feedback loops.</p>
+        </div>
+    </div>
+</section>
+
+<section class="hobbies section-pad">
+    <div class="section-heading" data-reveal>
+        <p class="section-kicker">Systems I like</p>
+        <h2>Outside the editor, the same curiosity shows up in motion, strategy, and machines.</h2>
+    </div>
+    <div class="mosaic">
+        <article class="mosaic-tile wide" data-reveal>
+            <span>Endurance mindset</span>
+            <h3>Fitness, cardio, and golf</h3>
+        </article>
+        <article class="mosaic-tile tall" data-reveal>
+            <span>Racing lines</span>
+            <h3>Sim racing, F1, Verstappen, and cars</h3>
+        </article>
+        <article class="mosaic-tile" data-reveal>
+            <span>Competitive loops</span>
+            <h3>League of Legends and gaming</h3>
+        </article>
+        <article class="mosaic-tile" data-reveal>
+            <span>Big machines</span>
+            <h3>Spaceflight and rocketry</h3>
+        </article>
+        <article class="mosaic-tile wide" data-reveal>
+            <span>Daily systems</span>
+            <h3>Apple tech, AI workflows, and practical tinkering</h3>
+        </article>
+    </div>
+</section>
+
+<section class="contact section-pad dark-band" id="contact">
+    <div class="contact-panel" data-reveal>
+        <p class="section-kicker">Contact</p>
+        <h2>Have a practical problem, internship opportunity, or full-stack idea?</h2>
+        <p>Reach Lars directly by email.</p>
+        <div class="contact-actions">
+            <a class="button primary light" href="{{ mailto }}">{{ contact_email }}</a>
+            <button class="button secondary light" type="button" data-copy-email="{{ contact_email }}">Copy email</button>
+        </div>
+        <div class="social-row">
+            {% if has_github_url %}
+            <a href="{{ github_url }}" rel="noopener noreferrer">GitHub</a>
+            {% endif %}
+            {% if has_linkedin_url %}
+            <a href="{{ linkedin_url }}" rel="noopener noreferrer">LinkedIn</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

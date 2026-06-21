@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Manage projects | Lars Nieuwenhuis{% endblock %}
+{% block body_class %}admin-page{% endblock %}
+
+{% block content %}
+<section class="admin-shell section-pad">
+    <div class="admin-topbar">
+        <div>
+            <p class="section-kicker">Admin</p>
+            <h1>Projects</h1>
+            <p>Signed in as {{ username }}. Publish only the work that is ready for the public portfolio.</p>
+        </div>
+        <div class="admin-actions inline">
+            <a class="button primary" href="/admin/projects/new">New project</a>
+            <a class="button secondary" href="/admin">Dashboard</a>
+        </div>
+    </div>
+
+    {% if has_projects %}
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Visibility</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{ project.display_order }}</td>
+                    <td>
+                        <a href="/admin/projects/{{ project.id }}/edit">{{ project.title }}</a>
+                        <small>/projects/{{ project.slug }}</small>
+                    </td>
+                    <td>{{ project.status }}</td>
+                    <td>{% if project.published %}Published{% else %}Draft{% endif %}</td>
+                    <td>
+                        <div class="row-actions">
+                            <a class="mini-button" href="/admin/projects/{{ project.id }}/edit">Edit</a>
+                            <form method="post" action="/admin/projects/{{ project.id }}/toggle-published">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <button class="mini-button" type="submit">{% if project.published %}Unpublish{% else %}Publish{% endif %}</button>
+                            </form>
+                            <form method="post" action="/admin/projects/{{ project.id }}/move-up">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <button class="mini-button" type="submit">Up</button>
+                            </form>
+                            <form method="post" action="/admin/projects/{{ project.id }}/move-down">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <button class="mini-button" type="submit">Down</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state admin-empty">
+        <h2>No projects yet.</h2>
+        <p>Create the first draft, then publish it when the case study is ready.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

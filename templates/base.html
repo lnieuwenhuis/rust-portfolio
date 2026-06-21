@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Lars Nieuwenhuis | Software Developer{% endblock %}</title>
+    <meta name="description" content="{% block description %}Portfolio of Lars Nieuwenhuis, a Netherlands-based software developer and full-stack builder.{% endblock %}">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Lars Nieuwenhuis | Software Developer">
+    <meta property="og:description" content="Practical tools, full-stack systems, and a Rust-first portfolio.">
+    <meta property="og:image" content="/static/og-card.svg">
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" data-reveal>
+        <a class="brand-mark" href="/" aria-label="Lars Nieuwenhuis home">
+            <span>LN</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+            <a href="/#about">About</a>
+            <a href="/#projects">Projects</a>
+            <a href="/#stack">Stack</a>
+            <a href="/#contact">Contact</a>
+        </nav>
+    </header>
+
+    <main id="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>Lars Nieuwenhuis</p>
+        <p>Built with Rust, Axum, Askama, SQLx, and a preference for useful systems.</p>
+    </footer>
+
+    <script src="/static/js/visuals.js" defer></script>
+</body>
+</html>

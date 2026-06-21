@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}{{ heading }} | Lars Nieuwenhuis{% endblock %}
+{% block body_class %}admin-page{% endblock %}
+
+{% block content %}
+<section class="admin-shell section-pad">
+    <div class="admin-topbar">
+        <div>
+            <p class="section-kicker">Admin</p>
+            <h1>{{ heading }}</h1>
+            <p>Signed in as {{ username }}.</p>
+        </div>
+        <a class="button secondary" href="{{ cancel_url }}">Back</a>
+    </div>
+
+    <form class="project-form" method="post" action="{{ action }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <div class="form-grid">
+            <label class="span-2">
+                <span>Title</span>
+                <input name="title" value="{{ project.title }}" required>
+            </label>
+            <label>
+                <span>Slug</span>
+                <input name="slug" value="{{ project.slug }}" placeholder="generated from title">
+            </label>
+            <label>
+                <span>Status</span>
+                <input name="status" value="{{ project.status }}" required>
+            </label>
+            <label class="span-2">
+                <span>Summary</span>
+                <textarea name="summary" rows="3" required>{{ project.summary }}</textarea>
+            </label>
+            <label class="span-2">
+                <span>Body markdown</span>
+                <textarea name="body_markdown" rows="12">{{ project.body_markdown }}</textarea>
+            </label>
+            <label>
+                <span>Role</span>
+                <input name="role" value="{{ project.role }}">
+            </label>
+            <label>
+                <span>Tech stack</span>
+                <input name="tech_stack" value="{{ project.tech_stack_text }}" placeholder="Rust, Axum, PostgreSQL">
+            </label>
+            <label>
+                <span>GitHub URL</span>
+                <input name="github_url" value="{{ project.github_url }}" inputmode="url">
+            </label>
+            <label>
+                <span>Live URL</span>
+                <input name="live_url" value="{{ project.live_url }}" inputmode="url">
+            </label>
+            <label>
+                <span>Image URL</span>
+                <input name="image_url" value="{{ project.image_url }}" inputmode="url">
+            </label>
+            <label>
+                <span>Accent</span>
+                <input name="accent" type="color" value="{{ project.accent }}">
+            </label>
+        </div>
+
+        <div class="toggle-row">
+            <label class="check-label">
+                <input type="checkbox" name="published" value="on" {% if project.published %}checked{% endif %}>
+                <span>Published</span>
+            </label>
+            <label class="check-label">
+                <input type="checkbox" name="featured" value="on" {% if project.featured %}checked{% endif %}>
+                <span>Featured</span>
+            </label>
+        </div>
+
+        <div class="admin-actions">
+            <button class="button primary" type="submit">Save project</button>
+            <a class="button secondary" href="{{ cancel_url }}">Cancel</a>
+        </div>
+    </form>
+
+    {% if is_edit %}
+    <form class="danger-zone" method="post" action="{{ delete_action }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <h2>Remove project</h2>
+        <p>This deletes the project from the database.</p>
+        <label class="check-label">
+            <input type="checkbox" name="confirm_delete" value="yes" required>
+            <span>I understand and want to delete this project.</span>
+        </label>
+        <button class="button danger" type="submit">Delete project</button>
+    </form>
+    {% endif %}
+</section>
+{% endblock %}

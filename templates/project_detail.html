@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} | Lars Nieuwenhuis{% endblock %}
+{% block description %}{{ project.summary }}{% endblock %}
+
+{% block content %}
+<article class="project-detail section-pad" style="--accent: {{ project.accent }};">
+    <a class="text-link" href="/#projects">Back to projects</a>
+    <header class="project-hero" data-reveal>
+        <p class="eyebrow">{{ project.status }}</p>
+        <h1>{{ project.title }}</h1>
+        <p>{{ project.summary }}</p>
+        {% if project.has_role %}
+        <span class="role-pill">{{ project.role }}</span>
+        {% endif %}
+    </header>
+
+    <div class="project-detail-grid">
+        <aside class="project-meta" data-reveal>
+            <h2>Stack</h2>
+            <div class="tag-row vertical">
+                {% for tech in project.tech_stack %}
+                <span>{{ tech }}</span>
+                {% endfor %}
+            </div>
+            <div class="project-links vertical-links">
+                {% if project.has_live_url %}
+                <a href="{{ project.live_url }}" rel="noopener noreferrer">Live project</a>
+                {% endif %}
+                {% if project.has_github_url %}
+                <a href="{{ project.github_url }}" rel="noopener noreferrer">Source code</a>
+                {% endif %}
+                <a href="{{ mailto }}">{{ contact_email }}</a>
+            </div>
+        </aside>
+
+        <div class="case-study prose" data-reveal>
+            {{ project.body_html|safe }}
+        </div>
+    </div>
+</article>
+{% endblock %}

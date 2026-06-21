@@ -10,9 +10,13 @@ pub mod seed;
 
 use std::{net::SocketAddr, sync::Arc};
 
-use axum::Router;
+use axum::{Router, http::header};
 use tokio::net::TcpListener;
-use tower_http::{compression::CompressionLayer, services::ServeDir, trace::TraceLayer};
+use tower::ServiceBuilder;
+use tower_http::{
+    compression::CompressionLayer, services::ServeDir, set_header::SetResponseHeaderLayer,
+    trace::TraceLayer,
+};
 use tracing_subscriber::{EnvFilter, fmt};
 
 use crate::{auth::SessionStore, config::Config, db::DbPool};
@@ -30,7 +34,12 @@ pub fn app(state: Arc<AppState>) -> Router {
         .merge(routes::admin::router())
         .nest_service(
             "/static",
-            ServeDir::new("static").append_index_html_on_directories(false),
+            ServiceBuilder::new()
+                .layer(SetResponseHeaderLayer::if_not_present(
+                    header::CACHE_CONTROL,
+                    header::HeaderValue::from_static("public, max-age=31536000, immutable"),
+                ))
+                .service(ServeDir::new("static").append_index_html_on_directories(false)),
         )
         .layer(CompressionLayer::new())
         .layer(TraceLayer::new_for_http())

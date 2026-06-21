@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 description = "A Rust-first portfolio website for Lars Nieuwenhuis."
 license = "MIT"
+default-run = "lars-portfolio"
 
 [dependencies]
 ammonia = "4"
@@ -24,7 +25,7 @@ sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "uuid"
 thiserror = "2"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal", "net"] }
 tower = { version = "0.5", features = ["util"] }
-tower-http = { version = "0.6", features = ["compression-br", "compression-gzip", "fs", "trace"] }
+tower-http = { version = "0.6", features = ["compression-br", "compression-gzip", "fs", "set-header", "trace"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 uuid = { version = "1", features = ["v4", "serde"] }

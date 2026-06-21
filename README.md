@@ -7,7 +7,7 @@ A Rust-first portfolio website for Lars Nieuwenhuis. The app uses Axum, Askama, 
 - Rust with Axum for routing and the web server
 - Askama for type-safe server-rendered templates
 - SQLx and PostgreSQL for projects
-- Argon2 password verification for the single admin account
+- First-login admin setup with Argon2 password storage
 - Handcrafted CSS and a small JavaScript file for public UI polish
 - Railway-ready build and run settings
 
@@ -17,14 +17,17 @@ Copy `.env.example` to `.env` and fill in:
 
 ```env
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/lars_portfolio
+PGUSER=postgres
+PGPASSWORD=postgres
 ADMIN_USERNAME=lars
-ADMIN_PASSWORD_HASH=replace_with_argon2_hash
 SESSION_SECRET=replace_with_64_char_random_secret
 BASE_URL=http://localhost:3000
 RUST_LOG=info
 ```
 
 `PORT` is read automatically when present. Locally, the app defaults to `3000` and listens on `0.0.0.0:3000`.
+
+`DATABASE_URL` is the base PostgreSQL connection string. When `PGUSER` or `PGPASSWORD` are present, the app injects them into `DATABASE_URL` before connecting.
 
 Optional public GitHub and LinkedIn links are intentionally blank in `src/config.rs`. Add real public URLs there when ready.
 
@@ -43,26 +46,22 @@ Optional public GitHub and LinkedIn links are intentionally blank in `src/config
    Copy-Item .env.example .env
    ```
 
-4. Generate an Argon2 password hash:
-
-   ```powershell
-   cargo run --bin hash_password
-   ```
-
-5. Put the generated value in `ADMIN_PASSWORD_HASH` and set a long random `SESSION_SECRET`.
-6. Run the app:
+4. Set a long random `SESSION_SECRET`.
+5. Run the app:
 
    ```powershell
    cargo run
    ```
 
-7. Open `http://localhost:3000`.
+6. Open `http://localhost:3000`.
 
 The app runs embedded SQLx migrations on startup and seeds safe draft projects only when the database is empty.
 
 ## Admin
 
-Visit `/admin/login` and sign in with `ADMIN_USERNAME` plus the password used to generate `ADMIN_PASSWORD_HASH`.
+Visit `/admin/login`. The first time, the form creates the admin password and stores a salted Argon2 hash in PostgreSQL. After that, the same screen becomes the normal login.
+
+The default admin username is `lars` unless `ADMIN_USERNAME` is set. There is no default password.
 
 The admin area can create, edit, publish or unpublish, reorder, and delete projects. JavaScript is not required for those workflows.
 
@@ -75,14 +74,16 @@ The admin area can create, edit, publish or unpublish, reorder, and delete proje
 
    ```env
    DATABASE_URL=...
+   PGUSER=...
+   PGPASSWORD=...
    ADMIN_USERNAME=lars
-   ADMIN_PASSWORD_HASH=...
    SESSION_SECRET=...
    BASE_URL=https://your-domain.example
    RUST_LOG=info
    ```
 
 5. Deploy. `railway.toml` uses Railpack, builds with `cargo build --release`, starts `./target/release/lars-portfolio`, and checks `/health`.
+6. Open `/admin/login` on the deployed domain and create the admin password.
 
 ## Useful Checks
 

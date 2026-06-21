@@ -2,6 +2,7 @@
 name = "lars-portfolio"
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.88"
 description = "A Rust-first portfolio website for Lars Nieuwenhuis."
 license = "MIT"
 default-run = "lars-portfolio"
@@ -28,6 +29,7 @@ tower = { version = "0.5", features = ["util"] }
 tower-http = { version = "0.6", features = ["compression-br", "compression-gzip", "fs", "set-header", "trace"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+url = "2"
 uuid = { version = "1", features = ["v4", "serde"] }
 
 [profile.release]

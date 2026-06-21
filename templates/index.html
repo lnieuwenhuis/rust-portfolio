@@ -13,66 +13,39 @@
             <a class="button primary" href="#projects">View projects</a>
             <a class="button secondary" href="#contact">Email Lars</a>
         </div>
-        <dl class="hero-facts" aria-label="Portfolio facts">
-            <div>
-                <dt>Current site</dt>
-                <dd>Rust-first, no frontend build step</dd>
-            </div>
-            <div>
-                <dt>Comfort zone</dt>
-                <dd>React, TypeScript, Laravel, Vue, GraphQL</dd>
-            </div>
-            <div>
-                <dt>Learning edge</dt>
-                <dd>Axum, SQLx, deployment-grade Rust</dd>
-            </div>
-        </dl>
     </div>
 
-    <div class="system-visual" data-orbit aria-label="A compact visual inventory of Lars' work">
-        <div class="visual-heading">
-            <span>Workbench</span>
-            <strong>01</strong>
+    <dl class="hero-facts" aria-label="Portfolio facts">
+        <div>
+            <dt>Current site</dt>
+            <dd>Rust-first, no frontend build step</dd>
         </div>
-        <div class="signal-board">
-            <div class="signal-row">
-                <span>Input</span>
-                <strong>messy operational flow</strong>
-            </div>
-            <div class="signal-row">
-                <span>Method</span>
-                <strong>model the state, trim the clicks</strong>
-            </div>
-            <div class="signal-row">
-                <span>Output</span>
-                <strong>forms, boards, scans, dashboards</strong>
-            </div>
-            <div class="signal-row">
-                <span>Check</span>
-                <strong>does the next action feel obvious?</strong>
-            </div>
+        <div>
+            <dt>Comfort zone</dt>
+            <dd>React, TypeScript, Laravel, Vue, GraphQL</dd>
         </div>
-        <div class="mini-map" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span><span></span>
+        <div>
+            <dt>Learning edge</dt>
+            <dd>Axum, SQLx, deployment-grade Rust</dd>
         </div>
-    </div>
+    </dl>
 </section>
 
 <section class="about section-pad" id="about">
     <div class="section-kicker">About</div>
     <div class="split-layout">
-        <h2>Less spectacle, more useful surface area.</h2>
+        <h2>I like making tools feel obvious.</h2>
         <div class="rich-copy">
-            <p>Lars likes taking a workflow apart until the state, permissions, and next action are visible. The best projects are the ones where a user stops thinking about the interface because the path through it makes sense.</p>
-            <p>Most of the work so far sits around React, TypeScript, Laravel, Vue, and GraphQL. This portfolio is the Rust experiment in public: Axum for routing, Askama for templates, SQLx for the database, and PostgreSQL for the project archive.</p>
+            <p>I like taking a workflow apart until the state, permissions, and next action feel obvious. The best projects are the ones where people stop thinking about the interface and can just get on with the work.</p>
+            <p>Most of my work so far sits around React, TypeScript, Laravel, Vue, and GraphQL. This portfolio is where I'm trying Rust in public: Axum for the server, Askama for templates, SQLx for the database, and PostgreSQL behind it.</p>
         </div>
     </div>
 </section>
 
 <section class="projects-section section-pad dark-band" id="projects">
     <div class="section-heading">
-        <p class="section-kicker">Featured projects</p>
-        <h2>Project notes, not fake launch copy.</h2>
+        <p class="section-kicker">Projects</p>
+        <h2>My best projects.</h2>
     </div>
 
     {% if has_projects %}
@@ -112,9 +85,9 @@
     </div>
     {% else %}
     <div class="empty-state">
-        <span>Draft archive</span>
+        <span>Coming soon</span>
         <h3>No public case studies yet.</h3>
-        <p>The database is seeded with editable drafts. Lars can publish them from the admin once the descriptions are safe, specific, and worth showing.</p>
+        <p>I'm keeping the first project write-ups as drafts until they are clear, specific, and actually useful to read.</p>
     </div>
     {% endif %}
 </section>

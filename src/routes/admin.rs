@@ -62,6 +62,8 @@ struct LoginTemplate {
     csrf_token: String,
     error: String,
     has_error: bool,
+    admin_username: String,
+    needs_setup: bool,
 }
 
 #[derive(Template)]
@@ -102,6 +104,7 @@ struct LoginForm {
     csrf_token: String,
     username: String,
     password: String,
+    confirm_password: Option<String>,
 }
 
 #[derive(Clone)]
@@ -112,7 +115,10 @@ struct ActiveAdmin {
 }
 
 async fn login_form(State(state): State<Arc<AppState>>) -> Result<Response, AppError> {
-    render_login(&state, None)
+    let needs_setup = db::get_admin_credential(&state.pool, &state.config.admin_username)
+        .await?
+        .is_none();
+    render_login(&state, None, needs_setup)
 }
 
 async fn login(
@@ -120,18 +126,67 @@ async fn login(
     headers: HeaderMap,
     Form(form): Form<LoginForm>,
 ) -> Result<Response, AppError> {
+    let credential = db::get_admin_credential(&state.pool, &state.config.admin_username).await?;
+    let needs_setup = credential.is_none();
     let expected = auth::login_csrf_from_headers(&headers).unwrap_or_default();
     if csrf::validate(&expected, &form.csrf_token).is_err() {
-        return render_login(&state, Some("The form expired. Please try again."));
+        return render_login(
+            &state,
+            Some("The form expired. Please try again."),
+            needs_setup,
+        );
     }
 
-    let username_matches = form.username.trim() == state.config.admin_username;
-    let password_matches = auth::verify_password(&state.config.admin_password_hash, &form.password);
-
-    if !username_matches || !password_matches {
-        return render_login(&state, Some("The username or password was not right."));
+    if form.username.trim() != state.config.admin_username {
+        return render_login(
+            &state,
+            Some("Use the configured admin username."),
+            needs_setup,
+        );
     }
 
+    if let Some(credential) = credential {
+        if !auth::verify_password(&credential.password_hash, &form.password) {
+            return render_login(
+                &state,
+                Some("The username or password was not right."),
+                false,
+            );
+        }
+    } else {
+        if form.password.len() < 8 {
+            return render_login(
+                &state,
+                Some("Choose a password with at least 8 characters."),
+                true,
+            );
+        }
+
+        let confirmation = form.confirm_password.unwrap_or_default();
+        if form.password != confirmation {
+            return render_login(&state, Some("The passwords did not match."), true);
+        }
+
+        let password_hash = auth::hash_password(&form.password).map_err(|error| {
+            tracing::error!(?error, "failed to hash admin password");
+            AppError::BadRequest("Could not save the password. Please try again.".to_string())
+        })?;
+        let created =
+            db::create_admin_credential(&state.pool, &state.config.admin_username, &password_hash)
+                .await?;
+        if !created {
+            return render_login(
+                &state,
+                Some("The admin password already exists. Sign in with it."),
+                false,
+            );
+        }
+    }
+
+    start_admin_session(&state).await
+}
+
+async fn start_admin_session(state: &Arc<AppState>) -> Result<Response, AppError> {
     let (session_id, _) = state
         .sessions
         .create(state.config.admin_username.clone())
@@ -388,12 +443,18 @@ async fn current_admin(state: &Arc<AppState>, headers: &HeaderMap) -> Option<Act
     })
 }
 
-fn render_login(state: &AppState, error: Option<&str>) -> Result<Response, AppError> {
+fn render_login(
+    state: &AppState,
+    error: Option<&str>,
+    needs_setup: bool,
+) -> Result<Response, AppError> {
     let token = auth::random_token();
     let mut response = render(LoginTemplate {
         csrf_token: token.clone(),
         error: error.unwrap_or_default().to_string(),
         has_error: error.is_some(),
+        admin_username: state.config.admin_username.clone(),
+        needs_setup,
     })?
     .into_response();
 

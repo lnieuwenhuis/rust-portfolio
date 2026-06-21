@@ -24,6 +24,12 @@ pub struct ProjectRow {
     pub updated_at: DateTime<Utc>,
 }
 
+#[derive(Debug, Clone, FromRow)]
+pub struct AdminCredentialRow {
+    pub username: String,
+    pub password_hash: String,
+}
+
 #[derive(Debug, Clone)]
 pub struct ProjectInput {
     pub title: String,

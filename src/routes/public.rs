@@ -62,9 +62,9 @@ async fn index(State(state): State<Arc<AppState>>) -> Result<Html<String>, AppEr
         contact_email: config::CONTACT_EMAIL,
         mailto: format!("mailto:{}", config::CONTACT_EMAIL),
         github_url: config::PUBLIC_GITHUB_URL,
-        has_github_url: !config::PUBLIC_GITHUB_URL.is_empty(),
+        has_github_url: config::has_public_github_url(),
         linkedin_url: config::PUBLIC_LINKEDIN_URL,
-        has_linkedin_url: !config::PUBLIC_LINKEDIN_URL.is_empty(),
+        has_linkedin_url: config::has_public_linkedin_url(),
     })
 }
 

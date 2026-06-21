@@ -1,7 +1,7 @@
 use sqlx::{PgPool, postgres::PgPoolOptions, types::Json};
 use uuid::Uuid;
 
-use crate::models::{ProjectInput, ProjectRow, slugify};
+use crate::models::{AdminCredentialRow, ProjectInput, ProjectRow, slugify};
 
 pub type DbPool = PgPool;
 
@@ -16,6 +16,42 @@ pub async fn count_projects(pool: &DbPool) -> Result<i64, sqlx::Error> {
     sqlx::query_scalar::<_, i64>("SELECT COUNT(*) FROM projects")
         .fetch_one(pool)
         .await
+}
+
+pub async fn get_admin_credential(
+    pool: &DbPool,
+    username: &str,
+) -> Result<Option<AdminCredentialRow>, sqlx::Error> {
+    sqlx::query_as::<_, AdminCredentialRow>(
+        r#"
+        SELECT username, password_hash
+        FROM admin_credentials
+        WHERE username = $1
+        "#,
+    )
+    .bind(username)
+    .fetch_optional(pool)
+    .await
+}
+
+pub async fn create_admin_credential(
+    pool: &DbPool,
+    username: &str,
+    password_hash: &str,
+) -> Result<bool, sqlx::Error> {
+    let result = sqlx::query(
+        r#"
+        INSERT INTO admin_credentials (username, password_hash)
+        VALUES ($1, $2)
+        ON CONFLICT (username) DO NOTHING
+        "#,
+    )
+    .bind(username)
+    .bind(password_hash)
+    .execute(pool)
+    .await?;
+
+    Ok(result.rows_affected() == 1)
 }
 
 pub async fn list_published_projects(pool: &DbPool) -> Result<Vec<ProjectRow>, sqlx::Error> {
